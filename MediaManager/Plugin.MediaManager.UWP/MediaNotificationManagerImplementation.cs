@@ -2,7 +2,7 @@
 using Windows.Media;
 using Windows.Storage;
 using Plugin.MediaManager.Abstractions;
-using Plugin.MediaManager.Abstractions.Implementations;
+using Plugin.MediaManager.Abstractions.Enums;
 
 namespace Plugin.MediaManager
 {
@@ -38,16 +38,26 @@ namespace Plugin.MediaManager
                 case MediaFileType.AudioUrl:
                     break;
                 case MediaFileType.AudioFile:
-                    await
-                        updater.CopyFromFileAsync(MediaPlaybackType.Music,
-                            await StorageFile.GetFileFromPathAsync(mediaFile.Url));
+                    if (!await updater.CopyFromFileAsync(MediaPlaybackType.Music,
+                            await StorageFile.GetFileFromPathAsync(mediaFile.Url)))
+                    {
+                        updater.Type = MediaPlaybackType.Music;
+                        updater.MusicProperties.Title = mediaFile?.Metadata?.Title ?? string.Empty;
+                        updater.MusicProperties.Artist = mediaFile?.Metadata?.Artist ?? string.Empty;
+                        updater.MusicProperties.AlbumTitle = mediaFile?.Metadata?.Album ?? string.Empty;
+                        updater.MusicProperties.AlbumArtist = mediaFile?.Metadata?.AlbumArtist ?? string.Empty;
+                    }
                     break;
                 case MediaFileType.VideoUrl:
                     break;
                 case MediaFileType.VideoFile:
-                    await
-                        updater.CopyFromFileAsync(MediaPlaybackType.Video,
-                            await StorageFile.GetFileFromPathAsync(mediaFile.Url));
+                    if (!await updater.CopyFromFileAsync(MediaPlaybackType.Video,
+                            await StorageFile.GetFileFromPathAsync(mediaFile.Url)))
+                    {
+                        updater.Type = MediaPlaybackType.Video;
+                        updater.VideoProperties.Title = mediaFile?.Metadata?.Title ?? string.Empty;
+                        updater.VideoProperties.Subtitle = mediaFile?.Metadata?.DisplaySubtitle ?? string.Empty;
+                    }
                     break;
                 case MediaFileType.Other:
                     break;
