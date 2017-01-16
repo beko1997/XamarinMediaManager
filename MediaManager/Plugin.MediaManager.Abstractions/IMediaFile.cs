@@ -1,9 +1,5 @@
-﻿using System;
-using System.ComponentModel;
-using Plugin.MediaManager.Abstractions;
-using Plugin.MediaManager.Abstractions.Enums;
+﻿using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
-using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager.Abstractions
 {
@@ -14,11 +10,6 @@ namespace Plugin.MediaManager.Abstractions
     /// </summary>
     public interface IMediaFile
     {
-        /// <summary>
-        /// A unique identifier for this media file
-        /// </summary>
-        Guid Id { get; set; }
-
         /// <summary>
         /// Indicator for player which type of file it should play
         /// </summary>
